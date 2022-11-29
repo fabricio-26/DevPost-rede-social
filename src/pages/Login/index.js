@@ -22,6 +22,7 @@ export default function Login() {
     setPassword('')
   }
 
+
   function handleSingIn(){
     if(email === '' || password === ''){
       console.log("Preencha todos os campos")
