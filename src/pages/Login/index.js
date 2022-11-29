@@ -4,11 +4,49 @@ import { Text } from 'react-native';
 import { Container, Title, Input, Button, ButtonText, SignUpButton, SignUpText } from './styles'
 
 export default function Login() {
-  const [login, setLogin] = useState(false);
+  const [login, setLogin] = useState(true);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  
+  
+  
+  // ----------FUNÇOES-----------------
+
 
   function toggleLogin(){
     setLogin(!login)
+    setName('')
+    setEmail('')
+    setPassword('')
   }
+
+  function handleSingIn(){
+    if(email === '' || password === ''){
+      console.log("Preencha todos os campos")
+      return;
+    }
+
+    //Fazer o login do user
+
+  }
+
+  function handleSingUp(){
+    if(name ==='' || email === '' || password === ''){
+      console.log("Preencha todos os campos")
+      return;
+    }
+
+        // Cadastrar o usuario na aplicação
+
+  }
+
+
+
+  //-----------------------------------
+
+
 
   if(login){
     return (
@@ -19,13 +57,17 @@ export default function Login() {
   
         <Input
           placeholder="Seuemail@teste.com"
+          value={email}
+          onChangeText={ (text) => setEmail(text)}
         />
   
         <Input
           placeholder="*****"
+          value={password}
+          onChangeText={ (text) => setPassword(text)}
         />
   
-        <Button>
+        <Button onPress={ handleSingIn }>
           <ButtonText>Acessar</ButtonText>
         </Button>
   
@@ -45,17 +87,23 @@ export default function Login() {
 
       <Input
         placeholder="Seu nome"
+        value={name}
+        onChangeText={ (text) => setName(text)}
       />
 
       <Input
         placeholder="Seuemail@teste.com"
+        value={email}
+        onChangeText={ (text) => setEmail(text)}
       />
 
       <Input
         placeholder="*****"
+        value={password}
+        onChangeText={ (text) => setPassword(text)}
       />
 
-      <Button>
+      <Button onPress={handleSingUp}>
         <ButtonText>Cadastrar</ButtonText>
       </Button>
 
