@@ -5,7 +5,7 @@ import firestore from "@react-native-firebase/firestore";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const AuthContenxt = createContext({})
+export const AuthContext = createContext({})
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
@@ -21,9 +21,9 @@ export default function AuthProvider({ children }) {
 
       if(storageUser){
         setUser(JSON.parse(storageUser))
-        loading(false)
+        setLoading(false)
       }
-      loading(false)
+      setLoading(false)
     }
 
     loadStorage()
@@ -51,7 +51,7 @@ export default function AuthProvider({ children }) {
             }
 
             setUser(data)
-            storageUser(data) //salvando no localStorage
+            storageUser(data)
             setLoadingAuth(false)
           })
       }).catch((error) => {
@@ -94,8 +94,8 @@ export default function AuthProvider({ children }) {
     }
 
   return (
-    <AuthContenxt.Provider value={{ signed: !!user, signUp, singIn, loadingAuth, loading }}>
+    <AuthContext.Provider value={{ signed: !!user, signUp, singIn, loadingAuth, loading }}>
       {children}
-    </AuthContenxt.Provider>
+    </AuthContext.Provider>
   )
 }
