@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Text } from 'react-native';
 
 import { Container, Title, Input, Button, ButtonText, SignUpButton, SignUpText } from './styles'
 
+import { AuthContenxt } from '../../contexts/auth';
+
 export default function Login() {
+  const { signUp } = useContext(AuthContenxt)
+
   const [login, setLogin] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -33,11 +37,13 @@ export default function Login() {
 
   }
 
-  function handleSingUp(){
+  async function handleSingUp(){
     if(name ==='' || email === '' || password === ''){
       console.log("Preencha todos os campos")
       return;
     }
+
+    await signUp(email, password, name)
 
         // Cadastrar o usuario na aplicação
 
