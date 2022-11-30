@@ -15,11 +15,11 @@ export default function AuthProvider({ children }) {
 
 
 
-  useEffect(()=>{
-    async function loadStorage(){
+  useEffect(() => {
+    async function loadStorage() {
       const storageUser = await AsyncStorage.getItem('@devapp');
 
-      if(storageUser){
+      if (storageUser) {
         setUser(JSON.parse(storageUser))
         setLoading(false)
       }
@@ -36,7 +36,7 @@ export default function AuthProvider({ children }) {
     setLoadingAuth(true)
 
     await auth().createUserWithEmailAndPassword(email, password)
-      .then(async(value) => { //funao anonima
+      .then(async (value) => { //funao anonima
         let uid = value.user.uid;
         await firestore().collection('users') //acessando o firestore e criando uma colecao de users e inserindo algo entro
           .doc(uid).set({
@@ -60,41 +60,49 @@ export default function AuthProvider({ children }) {
       })
   }
 
-    // ----------- Funcao para cadastrar usuarios------------------
-    async function singIn(email, password){
-      setLoadingAuth(true)
+  // ----------- Funcao para cadastrar usuarios------------------
+  async function signIn(email, password) {
+    setLoadingAuth(true)
 
-      await auth().signInWithEmailAndPassword(email, password)
-        .then(async (value) => {
-          let uid = value.user.uid;
+    await auth().signInWithEmailAndPassword(email, password)
+      .then(async (value) => {
+        let uid = value.user.uid;
 
-          const userProfile = await firestore().collection('users').doc(uid).get();
+        const userProfile = await firestore().collection('users').doc(uid).get();
 
-          //console.log(userProfile.data().nome)
+        //console.log(userProfile.data().nome)
 
-          let data = {
-            uid: uid,
-            nome: userProfile.data().nome,
-            email: value.user.email
-          }
+        let data = {
+          uid: uid,
+          nome: userProfile.data().nome,
+          email: value.user.email
+        }
 
-          setUser(data)
-          storageUser(data)
-          setLoadingAuth(false)
-        })
-        .catch((error) => {
-          console.log(error)
-          setLoadingAuth(false)
-        })
-    }
+        setUser(data)
+        storageUser(data)
+        setLoadingAuth(false)
+      })
+      .catch((error) => {
+        console.log(error)
+        setLoadingAuth(false)
+      })
+  }
 
-    // ---------- Mantendo usuario ----------
-    async function storageUser(data){
-      await AsyncStorage.setItem('@devapp', JSON.stringify(data))
-    }
+  async function signOut(){
+    await auth().signOut();
+    await AsyncStorage.clear()
+      .then(()=> {
+        setUser(null)
+      })
+  }
+
+  // ---------- Mantendo usuario logado----------
+  async function storageUser(data) {
+    await AsyncStorage.setItem('@devapp', JSON.stringify(data))
+  }
 
   return (
-    <AuthContext.Provider value={{ signed: !!user, signUp, singIn, loadingAuth, loading }}>
+    <AuthContext.Provider value={{ signed: !!user, signUp, signIn, signOut, loadingAuth, loading }}>
       {children}
     </AuthContext.Provider>
   )
