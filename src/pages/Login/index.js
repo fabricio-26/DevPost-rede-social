@@ -1,12 +1,13 @@
 import React, { useState, useContext } from 'react';
-import { Text } from 'react-native';
+import { Text, ActivityIndicator } from 'react-native';
 
 import { Container, Title, Input, Button, ButtonText, SignUpButton, SignUpText } from './styles'
 
 import { AuthContenxt } from '../../contexts/auth';
 
 export default function Login() {
-  const { signUp } = useContext(AuthContenxt)
+  // --------- Context API ----------------
+  const { signUp, singIn, loadingAuth } = useContext(AuthContenxt)
 
   const [login, setLogin] = useState(true);
   const [name, setName] = useState("");
@@ -27,12 +28,14 @@ export default function Login() {
   }
 
 
-  function handleSingIn(){
+  async function handleSingIn(){
     if(email === '' || password === ''){
       console.log("Preencha todos os campos")
       return;
-    }
 
+    }
+    
+    await singIn(email, password)
     //Fazer o login do user
 
   }
@@ -75,8 +78,13 @@ export default function Login() {
         />
   
         <Button onPress={ handleSingIn }>
-          <ButtonText>Acessar</ButtonText>
+          {loadingAuth ? (
+            <ActivityIndicator size={20} color="fff"/>
+          ) : (
+            <ButtonText>Acessar</ButtonText>
+          )}
         </Button>
+
   
         <SignUpButton onPress={toggleLogin}>
           <SignUpText>Criar uma conta</SignUpText>
@@ -110,9 +118,14 @@ export default function Login() {
         onChangeText={ (text) => setPassword(text)}
       />
 
-      <Button onPress={handleSingUp}>
-        <ButtonText>Cadastrar</ButtonText>
-      </Button>
+  
+      <Button onPress={ handleSingUp }>
+          {loadingAuth ? (
+            <ActivityIndicator size={20} color="fff"/>
+          ) : (
+            <ButtonText>Cadastrar</ButtonText>
+          )}
+        </Button>
 
       <SignUpButton onPress={toggleLogin}>
         <SignUpText>Já possuo uma conta</SignUpText>
