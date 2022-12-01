@@ -20,5 +20,5 @@ export const ButtonPost = styled.TouchableOpacity`
 
 export const ListPosts = styled.FlatList`
     flex: 1;
-    background-color: #fff;
+    background-color: #ddd;
 `;

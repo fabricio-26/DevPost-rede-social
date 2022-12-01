@@ -8,6 +8,7 @@ import firestore from '@react-native-firebase/firestore'
 
 import { Container, ButtonPost, ListPosts } from './styles';
 import Header from '../../components/Header'
+import PostsList from '../../components/PostsList';
 
 export default function Home() {
   const navigation = useNavigation()
@@ -35,6 +36,7 @@ export default function Home() {
               snapshot.docs.map(u => {
                 postList.push({
                   ...u.data(),
+                  id: u.id,
                 })
               })
 
@@ -67,7 +69,12 @@ export default function Home() {
     ) : (
       <ListPosts
       data={posts}
-      renderItem={ ({item}) => ( <Text>Teste</Text>) }
+      renderItem={ ({item}) => (
+        <PostsList
+          data={item}
+          userId={user?.uid}
+        />
+      ) }
       />
     )}
 
