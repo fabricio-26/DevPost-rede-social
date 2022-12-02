@@ -18,6 +18,11 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
 
 
+  const [loadingRefresh, setLoadingRefresh] = useState(false)
+  const [lastItem, setLastItem] = useState('')
+  const [emptyList, setEmptyList] = useState(false)
+
+
   useFocusEffect(
     useCallback(() => {
       let isActive = true;
@@ -40,7 +45,9 @@ export default function Home() {
                 })
               })
 
+              setEmptyList(!!snapshot.empty)
               setPosts(postList)
+              setLastItem(snapshot.docs[snapshot.docs.length - 1])
               setLoading(false)
             }
           })
@@ -57,6 +64,34 @@ export default function Home() {
   )
 
 
+  async function handleRefreshPosts() {
+    setLoadingRefresh(true)
+
+    firestore().collection('posts')
+      .orderBy('created', 'desc')
+      .limit(5)
+      .get()
+      .then((snapshot) => {
+
+        setPosts([]);
+        const postList = []
+
+        snapshot.docs.map(u => {
+          postList.push({
+            ...u.data(),
+            id: u.id,
+          })
+        })
+
+        setEmptyList(false)
+        setPosts(postList)
+        setLastItem(snapshot.docs[snapshot.docs.length - 1])
+        setLoading(false)
+
+      })
+
+      setLoadingRefresh(false)
+  }
 
   return (
     <Container>
@@ -64,26 +99,28 @@ export default function Home() {
 
       {loading ? (
         <View style={{ justifyContent: 'center', alignContent: 'center', flex: 1 }}>
-          <ActivityIndicator size={50} color="#e52246"/>
+          <ActivityIndicator size={50} color="#e52246" />
         </View>
-    ) : (
-      <ListPosts
-      showsVerticalScrollIndicator={false}
-      data={posts}
-      renderItem={ ({item}) => (
-        <PostsList
-          data={item}
-          userId={user?.uid}
+      ) : (
+        <ListPosts
+          showsVerticalScrollIndicator={false}
+          data={posts}
+          renderItem={({ item }) => (
+            <PostsList
+              data={item}
+              userId={user?.uid}
+            />
+          )}
+          refreshing={loadingRefresh}
+          onRefresh={handleRefreshPosts}
         />
-      ) }
-      />
-    )}
+      )}
 
-    
 
-    <ButtonPost activeOpacity={0.5} onPress={ ()=> navigation.navigate('NewPost')}>
-      <Feather name='edit-2' color="#fff" size={25}/>
-        </ButtonPost>
-   </Container>
+
+      <ButtonPost activeOpacity={0.5} onPress={() => navigation.navigate('NewPost')}>
+        <Feather name='edit-2' color="#fff" size={25} />
+      </ButtonPost>
+    </Container>
   );
 }
