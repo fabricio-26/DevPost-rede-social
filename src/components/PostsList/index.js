@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+import firestore from '@react-native-firebase/firestore'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import { formatDistance} from 'date-fns'
+import { ptBR } from 'date-fns/locale';
 
 import {
   Container,
@@ -14,13 +20,10 @@ import {
   TimePost
 } from './styles';
 
-import { formatDistance} from 'date-fns'
-import { ptBR } from 'date-fns/locale';
 
-import firestore from '@react-native-firebase/firestore'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function PostsList({ data, userId }) {
+  const navigation = useNavigation();
   const [likePost, setLikePost] = useState(data?.likes)
 
   function formatTimePost(){
@@ -78,7 +81,7 @@ export default function PostsList({ data, userId }) {
 
   return (
     <Container>
-      <Header>
+      <Header onPress={ () => navigation.navigate("PostsUser", { title: data.autor, userId: data.userId })}>
         {data.avatarUrl ? (
           <Avatar
             source={{ uri: data.avatarUrl }}

@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { View, Text } from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
 export default function PostsUser() {
+  const route = useRoute()
+  const navigation = useNavigation();
+
+  const [title, setTile] = useState(route?.params.title)
+
+  useLayoutEffect(()=>{
+    navigation.setOptions({
+      title: title === '' ? '' : title
+    })
+  },[navigation, title])
+
  return (
    <View>
-    <Text>Tela Posts User</Text>
+    <Text>{route.params?.title}</Text>
    </View>
   );
 }
