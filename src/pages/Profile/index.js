@@ -32,20 +32,24 @@ export default function Profile() {
   const [url, setUrl] = useState(null)
   const [open, setOpen] = useState(false)
 
-  useEffect(() =>{
-    async function loadAvatar(){
-      try{
-        let response = await storage().ref('users').child(user?.uid).getDownloadURL();
-        setUrl(response)
-      }catch(err){
+  useEffect(() => {
+    let isActive = true
+
+    async function loadAvatar() {
+      try {
+        if (isActive) {
+          let response = await storage().ref('users').child(user?.uid).getDownloadURL();
+          setUrl(response)
+        }
+      } catch (err) {
         console.log("nAO ENCONTRAMOS NENHUMA FOTO")
       }
     }
 
     loadAvatar()
 
-    return () => loadAvatar()
-  },[])
+    return () => isActive = false
+  }, [])
 
   // ------ Funcao para sair(Deslogar) ----------
   async function handleSignOut() {
@@ -134,7 +138,7 @@ export default function Profile() {
           .where('userId', '==', user?.uid).get();
 
         //Percorrer todos os posts e trocar a url da imagem
-        postDocs.forEach( async doc => {
+        postDocs.forEach(async doc => {
           await firestore().collection('posts').doc(doc.id).update({
             avatarUrl: image
           })
