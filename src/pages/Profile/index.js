@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Modal, Platform } from 'react-native';
 
 import { AuthContext } from '../../contexts/auth';
 import Header from '../../components/Header';
-import { 
+import {
   Container,
   Name,
   Email,
@@ -11,49 +11,79 @@ import {
   ButtonText,
   UpLoadButton,
   UpLoadText,
-  Avatar
- } from './styles'
+  Avatar,
+  ModalContainer,
+  ButtonBack,
+  Input
+} from './styles'
+
+import Icon from 'react-native-vector-icons/Feather';
 
 export default function Profile() {
   const { signOut, user, } = useContext(AuthContext)
 
-  const  [nome, setNome] = useState(user?.nome)
-  const  [url, setUrl] = useState(null)
+  const [nome, setNome] = useState(user?.nome)
+  const [url, setUrl] = useState(null)
+  const [open, setOpen] = useState(false)
 
   // ------ Funcao para sair(Deslogar) ----------
-  async function handleSignOut(){
+  async function handleSignOut() {
     await signOut()
   }
 
+  function updateProfile(){
+    alert("teste")
+  }
 
- return (
-   <Container>
-    <Header/>
 
-    { url ? (
-      <UpLoadButton>
-        <UpLoadText>+</UpLoadText>
-        <Avatar
-          source={{uri: url}}
-        />
-      </UpLoadButton>
-    ) : (
-      <UpLoadButton>
-        <UpLoadText>+</UpLoadText>
-      </UpLoadButton>
-    )}
+  return (
+    <Container>
+      <Header />
 
-    <Name>{user?.nome}</Name>
-    <Email>{user?.email}</Email>
+      {url ? (
+        <UpLoadButton>
+          <UpLoadText>+</UpLoadText>
+          <Avatar
+            source={{ uri: url }}
+          />
+        </UpLoadButton>
+      ) : (
+        <UpLoadButton>
+          <UpLoadText>+</UpLoadText>
+        </UpLoadButton>
+      )}
 
-    <Button bg="#428cfd">
-      <ButtonText>Atualizar Perfil</ButtonText>
-    </Button>
+      <Name>{user?.nome}</Name>
+      <Email>{user?.email}</Email>
 
-    <Button bg="#fff" onPress={handleSignOut}>
-      <ButtonText color="#3b3b3b">Sair</ButtonText>
-    </Button>
+      <Button bg="#428cfd" onPress={() => setOpen(true)}>
+        <ButtonText>Atualizar Perfil</ButtonText>
+      </Button>
 
-   </Container>
+      <Button bg="#fff" onPress={handleSignOut}>
+        <ButtonText color="#3b3b3b">Sair</ButtonText>
+      </Button>
+
+      <Modal visible={open} animationType="slide" transparent={true}>
+        <ModalContainer behavior={Platform.OS === 'android' ? '' : 'padding'}>
+          <ButtonBack onPress={ () => setOpen(false) }>
+            <Icon name='arrow-left' size={22} color="#121212" />
+            <ButtonText color="#121212" >Voltar</ButtonText>
+          </ButtonBack>
+
+          <Input
+            placeholder={user?.nome}
+            value={nome}
+            onChangeText={ (text) => setNome(text)}
+          />
+
+          <Button bg="#428cfd" onPress={ updateProfile }>
+            <ButtonText color="#fff">Salvar</ButtonText>
+          </Button>
+
+        </ModalContainer>
+      </Modal>
+
+    </Container>
   );
 }
