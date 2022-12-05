@@ -6,19 +6,17 @@
 
 ## Sobre o projeto:
 
-Desafio passado dentro de um curso onde o projeto inicial era construir um app com duas telas onde o usuario poderia escolher produtos de uma lista e adicionar ao carrinho, podendo tambem remover ou adicionar itens.
+Aplicativo feito durante o curso que atualmente estou fazendo do *Sujeito Programador* onde a proposta do app era criar com base no layout acima, uma rede social armazenando dados no firebase, e que tambem tivesse vairias funcionalidades como rota para criação de posts, mostrando qunato tempo que o post foi feito, ao clicar no nome do usuario que fez o post, direcionar para tela de todos os posts feitos por este usuario, em perfil do usuario e possivel editar nome e alterar foto junto com todos os posts ja feitos e muitas outras funcionalidades
 
-## Ideia
-
-A ideal inicial veio do curso do Sujeito progamador que passsou o desafio e fiz algumas alteraçoes para que pudesse ficar mais completo e profissional adicionando imagens de itens, formatação nos valores de itens para tipo BRL, modal sobre produtos scrollView com opçoes de vinhos por tipo que ainda sera inclementado.
 
 - Pros: fixei como utilizar Context API, navigations, FlatList, estilizar e muito mais
 
 ## :rocket: Tecnologias utilizadas:
 
-- React Native - Expo
+- React Native - CLI
 - Context Api
 - JavaScript
+- Styled-components
 
 ## Executando o projeto
 
@@ -26,13 +24,10 @@ Utilize o **yarn install** ou o **npm install** para instalar as dependências d
 Em seguida, inicie o projeto.
 
 ```cl
-npx expo start
+react-native run-android
 ```
 
 
-## :memo: Licença
-
-Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](https://github.com/fabricio-26/Carrinho-de-compra/blob/main/LICENSE) para mais detalhes.
 
 ---
 
