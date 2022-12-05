@@ -2,7 +2,7 @@
 <h1 align="center">DevPost-rede-social</h1>
 
 
-<img alt="gif-cell" src="https://github.com/fabricio-26/Carrinho-de-compra/blob/main/src/img/Readme.png">
+<img alt="gif-cell" src="https://github.com/fabricio-26/DevPost-rede-social/blob/main/src/assets/devpost.png">
 
 ## Sobre o projeto:
 
