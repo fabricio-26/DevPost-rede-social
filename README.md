@@ -26,7 +26,13 @@ Em seguida, inicie o projeto.
 ```cl
 react-native run-android
 ```
+ou
 
+```cl
+npx react-native run-android
+```
+
+Se estiver usando Gerenciador Npm
 
 
 ---
